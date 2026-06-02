@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen de Finanzas</title>
+    <!-- Google Fonts Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Principal -->
+    <header class="app-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 24px;">
+        <button onclick="changeMonth(-1)" class="icon-btn" style="color: white; margin: 0;"><i class="ph ph-caret-left"></i></button>
+        <div style="text-align: center;">
+            <h1 id="month-indicator" style="font-size: 1.25rem; font-weight: 700; margin: 0; text-transform: capitalize;">Cargando...</h1>
+            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.85rem; margin: 4px 0 0 0;">Resumen Mensual</p>
+        </div>
+        <button onclick="changeMonth(1)" class="icon-btn" style="color: white; margin: 0;"><i class="ph ph-caret-right"></i></button>
+    </header>
+    <!-- Pestañas de Acciones Superiores -->
+    <nav class="top-tabs">
+        <button class="tab-btn" onclick="navigateAction('Gastos')">GASTOS</button>
+        <button class="tab-btn" onclick="navigateAction('Ingresos')">INGRESOS</button>
+        <button class="tab-btn" onclick="navigateAction('Metas')">METAS</button>
+    </nav>
+    <!-- Contenedor Principal de Vistas -->
+    <main id="app-content">
+        <!-- VISTA: INICIO -->
+        <section id="view-home" class="view-section active">
+            
+            <div class="card chart-card" style="display: flex; justify-content: center; align-items: center;">
+                <div style="width: 250px; height: 250px; position: relative;">
+                    <canvas id="balanceChart"></canvas>
+                    <div class="chart-center-text">
+                        <span>Ingresos</span>
+                        <h2 id="ingresos-amount">$0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listado tipo balance -->
+             <div class="balance-list">
+                 <div class="balance-item">
+                     <div class="item-icon red-bg"><i class="ph ph-trend-down"></i></div>
+                     <span class="item-label">Gastos</span>
+                     <span class="item-value" id="total-gastos">$0</span>
+                 </div>
+                 <div class="balance-item">
+                     <div class="item-icon green-bg"><i class="ph ph-trend-up"></i></div>
+                     <span class="item-label">Ingresos</span>
+                     <span class="item-value" id="total-ingresos">$0</span>
+                 </div>
+                 <div class="balance-item">
+                     <div class="item-icon" style="background-color: var(--primary);"><i class="ph ph-wallet"></i></div>
+                     <span class="item-label">Saldo</span>
+                     <span class="item-value" id="total-saldo">$0</span>
+                 </div>
+             </div>
+
+        </section>
+
+        <!-- VISTA: TRANSACCIONES -->
+        <section id="view-transactions" class="view-section">
+            <h2 class="view-title">Historial de Transacciones</h2>
+            <div id="transactions-list" class="transactions-container">
+                <!-- Se llenará con JS -->
+                <p>Cargando transacciones...</p>
+            </div>
+        </section>
+
+        <!-- VISTA: ANALISIS -->
+        <section id="view-analysis" class="view-section">
+            <h2 class="view-title">Análisis de Tendencia</h2>
+            <div class="card chart-card" style="align-items: stretch;">
+                <h3 style="margin-bottom: 20px;">Últimos Meses</h3>
+                <div style="width: 100%; height: 300px; position: relative;">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA: GASTOS FORM -->
+        <section id="view-gastos" class="view-section">
+             <div class="dynamic-header">
+                  <button onclick="goBack()" class="icon-btn"><i class="ph ph-arrow-left"></i></button>
+                  <h2 class="view-title" style="margin-bottom:0;">Registrar Gasto</h2>
+             </div>
+             <div class="card">
+                 <form id="form-gasto" class="data-form">
+                     <div class="form-group">
+                         <label for="gasto-fecha">Fecha</label>
+                         <input type="date" id="gasto-fecha" required>
+                     </div>
+                     <div class="form-group">
+                         <label for="gasto-categoria">Categoría</label>
+                         <select id="gasto-categoria" required>
+                             <option value="" disabled selected>Selecciona una categoría</option>
+                             <option value="Casa crédito vivienda">Casa crédito vivienda</option>
+                             <option value="Zamir pensión">Zamir pensión</option>
+                             <option value="Zamir colegio">Zamir colegio</option>
+                             <option value="Zamir dentista">Zamir dentista</option>
+                             <option value="Zamir taekwondo">Zamir taekwondo</option>
+                             <option value="Entel">Entel</option>
+                             <option value="Agua">Agua</option>
+                             <option value="Luz">Luz</option>
+                             <option value="Gas">Gas</option>
+                             <option value="Expensas">Expensas</option>
+                             <option value="Gasolina">Gasolina</option>
+                             <option value="Netflix">Netflix</option>
+                             <option value="Youtube">Youtube</option>
+                             <option value="Google">Google</option>
+                             <option value="Transporte Juan Angel">Transporte Juan Angel</option>
+                             <option value="Víveres del mes">Víveres del mes</option>
+                             <option value="Viveres diarios">Viveres diarios</option>
+                             <option value="Julieta">Julieta</option>
+                             <option value="Gastos varios">Gastos varios</option>
+                         </select>
+                     </div>
+                     <div class="form-group">
+                         <label for="gasto-monto">Monto (Bs.)</label>
+                         <input type="number" id="gasto-monto" step="0.01" min="0" placeholder="0.00" required>
+                     </div>
+                     <div class="form-group">
+                         <label for="gasto-descripcion">Descripción (opcional)</label>
+                         <input type="text" id="gasto-descripcion" placeholder="Detalles del gasto...">
+                     </div>
+                     <button type="submit" class="submit-btn" id="btn-save-gasto">Guardar Gasto</button>
+                 </form>
+             </div>
+        </section>
+
+        <!-- VISTA: INGRESOS FORM -->
+        <section id="view-ingresos" class="view-section">
+             <div class="dynamic-header">
+                  <button onclick="goBack()" class="icon-btn"><i class="ph ph-arrow-left"></i></button>
+                  <h2 class="view-title" style="margin-bottom:0;">Registrar Ingreso</h2>
+             </div>
+             <div class="card">
+                 <form id="form-ingreso" class="data-form">
+                     <div class="form-group">
+                         <label for="ingreso-fecha">Fecha</label>
+                         <input type="date" id="ingreso-fecha" required>
+                     </div>
+                     <div class="form-group">
+                         <label for="ingreso-persona">Persona</label>
+                         <select id="ingreso-persona" required>
+                             <option value="" disabled selected>Selecciona una persona</option>
+                             <option value="Juan Angel">Juan Angel</option>
+                             <option value="Marianela">Marianela</option>
+                         </select>
+                     </div>
+                     <div class="form-group">
+                         <label for="ingreso-monto">Monto (Bs.)</label>
+                         <input type="number" id="ingreso-monto" step="0.01" min="0" placeholder="0.00" required>
+                     </div>
+                     <div class="form-group">
+                         <label for="ingreso-detalle">Detalle (opcional)</label>
+                         <input type="text" id="ingreso-detalle" placeholder="Detalles del ingreso...">
+                     </div>
+                     <button type="submit" class="submit-btn" id="btn-save-ingreso">Guardar Ingreso</button>
+                 </form>
+             </div>
+        </section>
+
+        <!-- VISTA DINAMICA (Botones de accion restantes) -->
+        <section id="view-dynamic" class="view-section">
+             <div class="dynamic-header">
+                  <button onclick="goBack()" class="icon-btn"><i class="ph ph-arrow-left"></i></button>
+                  <h2 class="view-title" id="dynamic-title" style="margin-bottom:0;">Detalle</h2>
+             </div>
+             <div class="card">
+                 <p>Esta sección es solo de navegación. Próximamente se agregarán formularios o funcionalidades específicas.</p>
+             </div>
+        </section>
+
+    </main>
+
+    <!-- Barra de Navegación Inferior -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" data-target="view-home">
+            <i class="ph-fill ph-chart-pie-slice"></i>
+            <span>Resumen</span>
+        </a>
+        <a href="#" class="nav-item" data-target="view-transactions">
+            <i class="ph ph-arrows-down-up"></i>
+            <span>Transacciones</span>
+        </a>
+        <a href="#" class="nav-item" data-target="view-analysis">
+            <i class="ph ph-chart-bar"></i>
+            <span>Análisis</span>
+        </a>
+    </nav>
+
+    <script src="app.js?v=2"></script>
+</body>
+</html>
